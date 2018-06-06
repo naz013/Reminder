@@ -86,7 +86,7 @@ class LoginActivity : ThemedActivity() {
                 .load("https://unsplash.it/1080/1920?image=596&blur")
                 .apply(myOptions)
                 .into(object : SimpleTarget<Drawable>() {
-                    override fun onResourceReady(resource: Drawable?, transition: Transition<in Drawable>?) {
+                    override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
                         binding.imageView2.setImageDrawable(resource)
                     }
 
