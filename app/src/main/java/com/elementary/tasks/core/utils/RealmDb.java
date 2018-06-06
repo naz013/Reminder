@@ -161,8 +161,7 @@ public class RealmDb {
 
     @Nullable
     public BirthdayItem getBirthday(@NonNull String key) {
-        Realm realm = getRealm();
-        RealmBirthdayItem item = realm.where(RealmBirthdayItem.class).equalTo("uuId", key).findFirst();
+        RealmBirthdayItem item = getRealm().where(RealmBirthdayItem.class).equalTo("key", key).findFirst();
         if (item != null) {
             return new BirthdayItem(item);
         } else {

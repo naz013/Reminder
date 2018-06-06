@@ -94,9 +94,9 @@ public class EventJobService extends Job {
 
     private void showBirthday(Context context, BirthdayItem item) {
         if (Prefs.getInstance(context).getReminderType() == 0) {
-            context.startActivity(ShowBirthdayActivity.getLaunchIntent(context, item.getUuId()));
+            context.startActivity(ShowBirthdayActivity.getLaunchIntent(context, item.getKey()));
         } else {
-            ReminderUtils.showSimpleBirthday(context, item.getUuId());
+            ReminderUtils.showSimpleBirthday(context, item.getKey());
         }
     }
 

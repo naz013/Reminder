@@ -150,7 +150,7 @@ public class EventsFactory implements RemoteViewsService.RemoteViewsFactory {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    data.add(new CalendarItem(CalendarItem.Type.BIRTHDAY, mContext.getString(R.string.birthday), name, item.getUuId(), birthday, "", eventTime, 1, item));
+                    data.add(new CalendarItem(CalendarItem.Type.BIRTHDAY, mContext.getString(R.string.birthday), name, item.getKey(), birthday, "", eventTime, 1, item));
                 }
                 calendar.setTimeInMillis(calendar.getTimeInMillis() + (1000 * 60 * 60 * 24));
                 n++;

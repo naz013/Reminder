@@ -372,7 +372,7 @@ public class ShowBirthdayActivity extends BaseNotificationActivity {
     @Override
     protected String getUuId() {
         if (mBirthdayItem != null) {
-            return mBirthdayItem.getUuId();
+            return mBirthdayItem.getKey();
         } else return "";
     }
 
