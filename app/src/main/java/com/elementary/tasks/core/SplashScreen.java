@@ -71,8 +71,11 @@ public class SplashScreen extends ThemedActivity {
     }
 
     private void initGroups() {
-        if (RealmDb.getInstance().getAllGroups().size() == 0) {
-            RealmDb.getInstance().setDefaultGroups(this);
+        try {
+            if (RealmDb.getInstance().getAllGroups().size() == 0) {
+                RealmDb.getInstance().setDefaultGroups(this);
+            }
+        } catch (Exception ignored) {
         }
     }
 
