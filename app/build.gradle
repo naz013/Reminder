@@ -16,8 +16,8 @@ android {
         applicationId 'com.cray.software.justreminder'
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 200
-        versionName '6.3.9'
+        versionCode 201
+        versionName '6.4.0'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         renderscriptTargetApi 20
@@ -58,7 +58,7 @@ android {
             dimension "level"
             applicationId 'com.cray.software.justreminderpro'
             buildConfigField "boolean", "IS_PRO", "true"
-            versionCode 171
+            versionCode 172
         }
     }
     packagingOptions {
@@ -171,7 +171,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.7.1'
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
     implementation 'com.tuyenmonkey:mkloader:1.4.0'
     implementation 'me.relex:circleindicator:1.2.2@aar'
