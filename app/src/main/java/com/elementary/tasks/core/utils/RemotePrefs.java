@@ -3,6 +3,7 @@ package com.elementary.tasks.core.utils;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.support.annotation.Nullable;
 
 import com.elementary.tasks.R;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -47,11 +48,16 @@ public class RemotePrefs {
     private PackageManager pm;
     private String packageName;
 
+    @Nullable
     public static RemotePrefs getInstance(Context context) {
         if (instance == null) {
             synchronized (RemotePrefs.class) {
                 if (instance == null) {
-                    instance = new RemotePrefs(context.getApplicationContext());
+                    try {
+                        instance = new RemotePrefs(context.getApplicationContext());
+                    } catch (Exception e) {
+                        instance = null;
+                    }
                 }
             }
         }

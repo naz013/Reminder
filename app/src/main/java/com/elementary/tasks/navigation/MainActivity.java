@@ -181,19 +181,25 @@ public class MainActivity extends ThemedActivity implements NavigationView.OnNav
             showRateDialog();
         }
         showMainImage();
-        RemotePrefs.getInstance(this).addUpdateObserver(this);
-        if (!Module.isPro()) {
-            RemotePrefs.getInstance(this).addSaleObserver(this);
+        RemotePrefs remotePrefs = RemotePrefs.getInstance(this);
+        if (remotePrefs != null) {
+            remotePrefs.addUpdateObserver(this);
+            if (!Module.isPro()) {
+                remotePrefs.addSaleObserver(this);
+            }
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (!Module.isPro()) {
-            RemotePrefs.getInstance(this).removeSaleObserver(this);
+        RemotePrefs remotePrefs = RemotePrefs.getInstance(this);
+        if (remotePrefs != null) {
+            if (!Module.isPro()) {
+                remotePrefs.removeSaleObserver(this);
+            }
+            remotePrefs.removeUpdateObserver(this);
         }
-        RemotePrefs.getInstance(this).removeUpdateObserver(this);
     }
 
     private boolean isRateDialogShowed() {
