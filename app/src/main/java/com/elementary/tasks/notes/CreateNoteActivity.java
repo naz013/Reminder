@@ -289,13 +289,13 @@ public class CreateNoteActivity extends ThemedActivity implements PhotoSelection
     }
 
     private void micClick() {
+        if (!Permissions.checkPermission(this, Permissions.RECORD_AUDIO)) {
+            Permissions.requestPermission(this, AUDIO_CODE, Permissions.RECORD_AUDIO);
+            return;
+        }
         if (speech != null) {
             hideRecording();
             releaseSpeech();
-            return;
-        }
-        if (!Permissions.checkPermission(this, Permissions.RECORD_AUDIO)) {
-            Permissions.requestPermission(this, AUDIO_CODE, Permissions.RECORD_AUDIO);
             return;
         }
         initRecognizer();
