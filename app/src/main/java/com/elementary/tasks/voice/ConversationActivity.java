@@ -635,13 +635,13 @@ public class ConversationActivity extends ThemedActivity {
     }
 
     private void micClick() {
+        if (!Permissions.checkPermission(this, Permissions.RECORD_AUDIO)) {
+            Permissions.requestPermission(this, AUDIO_CODE, Permissions.RECORD_AUDIO);
+            return;
+        }
         if (binding.recordingView.isWorking()) {
             if (speech != null) speech.stopListening();
             stopView();
-            return;
-        }
-        if (!Permissions.checkPermission(this, Permissions.RECORD_AUDIO)) {
-            Permissions.requestPermission(this, AUDIO_CODE, Permissions.RECORD_AUDIO);
             return;
         }
         binding.recordingView.start();
