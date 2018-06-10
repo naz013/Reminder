@@ -103,6 +103,7 @@ public class CreateNoteActivity extends ThemedActivity implements PhotoSelection
     public static final int MENU_ITEM_DELETE = 12;
     private static final int EDIT_CODE = 11223;
     private static final int AUDIO_CODE = 255000;
+    private static final int SEND_CODE = 122455;
 
     private int mHour = 0;
     private int mMinute = 0;
@@ -447,10 +448,13 @@ public class CreateNoteActivity extends ThemedActivity implements PhotoSelection
     }
 
     private void shareNote() {
+        if (!Permissions.checkPermission(this, Permissions.WRITE_EXTERNAL, Permissions.READ_EXTERNAL)) {
+            Permissions.requestPermission(this, SEND_CODE, Permissions.READ_EXTERNAL, Permissions.WRITE_EXTERNAL);
+            return;
+        }
         createObject();
         showProgress();
-        BackupTool.CreateCallback callback = this::sendNote;
-        new Thread(() -> BackupTool.getInstance().createNote(mItem, callback)).start();
+        new Thread(() -> BackupTool.getInstance().createNote(mItem, this::sendNote)).start();
     }
 
     private void sendNote(File file) {
@@ -782,6 +786,11 @@ public class CreateNoteActivity extends ThemedActivity implements PhotoSelection
             case AUDIO_CODE:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     micClick();
+                }
+                break;
+            case SEND_CODE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    shareNote();
                 }
                 break;
         }
