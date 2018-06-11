@@ -946,10 +946,11 @@ public class RealmDb {
         Realm realm = getRealm();
         if (realm != null) {
             EventsDataSingleton.getInstance().setChanged();
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(new RealmReminder(item));
+            realm.commitTransaction();
             if (listener != null) {
-                realm.executeTransactionAsync(r -> r.copyToRealmOrUpdate(new RealmReminder(item)), listener);
-            } else {
-                realm.executeTransaction(r -> r.copyToRealmOrUpdate(new RealmReminder(item)));
+                listener.onSuccess();
             }
         }
     }
