@@ -63,8 +63,11 @@ public class TaskListActivity extends ThemedActivity implements ColorPickerView.
     };
 
     private void hideDialog() {
-        if (mDialog != null && mDialog.isShowing()) {
-            mDialog.dismiss();
+        try {
+            if (mDialog != null && mDialog.isShowing()) {
+                mDialog.dismiss();
+            }
+        } catch (Exception ignored) {
         }
     }
 
