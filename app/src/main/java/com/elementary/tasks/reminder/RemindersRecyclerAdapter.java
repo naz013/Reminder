@@ -289,8 +289,8 @@ public class RemindersRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     @BindingAdapter({"loadCheck"})
-    public static void loadCheck(RoboSwitchCompat switchCompat, Reminder item) {
-        if (item.isRemoved()) {
+    public static void loadCheck(RoboSwitchCompat switchCompat, @Nullable Reminder item) {
+        if (item == null || item.isRemoved()) {
             switchCompat.setVisibility(View.GONE);
             return;
         }
