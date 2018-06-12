@@ -1,5 +1,7 @@
 package com.elementary.tasks.reminder.models;
 
+import android.support.annotation.Nullable;
+
 import com.elementary.tasks.core.interfaces.RecyclerInterface;
 import com.elementary.tasks.core.utils.SuperUtil;
 import com.elementary.tasks.core.utils.TimeUtil;
@@ -430,6 +432,7 @@ public class Reminder implements RecyclerInterface {
         return this;
     }
 
+    @Nullable
     public String getGroupUuId() {
         return groupUuId;
     }

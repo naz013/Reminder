@@ -49,7 +49,6 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 public final class BackupTool {
 
     private static final String TAG = "BackupTool";
@@ -95,7 +94,7 @@ public final class BackupTool {
         }
     }
 
-    public void exportTemplate(@NonNull TemplateItem item) {
+    private void exportTemplate(@NonNull TemplateItem item) {
         WeakReference<String> jsonData = new WeakReference<>(new Gson().toJson(item));
         File dir = MemoryUtil.getTemplatesDir();
         if (dir != null) {
@@ -156,7 +155,7 @@ public final class BackupTool {
         }
     }
 
-    public void exportPlace(@NonNull PlaceItem item) {
+    private void exportPlace(@NonNull PlaceItem item) {
         WeakReference<String> jsonData = new WeakReference<>(new Gson().toJson(item));
         File dir = MemoryUtil.getPlacesDir();
         if (dir != null) {
@@ -217,7 +216,7 @@ public final class BackupTool {
         }
     }
 
-    public void exportBirthday(@NonNull BirthdayItem item) {
+    private void exportBirthday(@NonNull BirthdayItem item) {
         WeakReference<String> jsonData = new WeakReference<>(new Gson().toJson(item));
         File dir = MemoryUtil.getBirthdaysDir();
         if (dir != null) {
@@ -258,7 +257,7 @@ public final class BackupTool {
         }
     }
 
-    public void exportGroup(@NonNull GroupItem item) {
+    private void exportGroup(@NonNull GroupItem item) {
         WeakReference<String> jsonData = new WeakReference<>(new Gson().toJson(item));
         File dir = MemoryUtil.getGroupsDir();
         if (dir != null) {
@@ -416,7 +415,7 @@ public final class BackupTool {
     }
 
     @Nullable
-    public NoteItem getNote(@NonNull ContentResolver cr, @NonNull Uri name) throws IOException, IllegalStateException {
+    public NoteItem getNote(@NonNull ContentResolver cr, @NonNull Uri name) throws IllegalStateException {
         try {
             WeakReference<NoteItem> note = new WeakReference<>(new Gson().fromJson(readFileToJson(cr, name), NoteItem.class));
             return note.get();
@@ -463,7 +462,7 @@ public final class BackupTool {
         }
     }
 
-    public void exportNote(@NonNull NoteItem item) {
+    private void exportNote(@NonNull NoteItem item) {
         WeakReference<String> jsonData = new WeakReference<>(new Gson().toJson(item));
         File dir = MemoryUtil.getNotesDir();
         if (dir != null) {
@@ -502,7 +501,7 @@ public final class BackupTool {
     }
 
     @Nullable
-    public String readFileToJson(@NonNull ContentResolver cr, @NonNull Uri name) throws IOException {
+    private String readFileToJson(@NonNull ContentResolver cr, @NonNull Uri name) throws IOException {
         InputStream inputStream = null;
         try {
             inputStream = cr.openInputStream(name);
@@ -529,7 +528,7 @@ public final class BackupTool {
     }
 
     @NonNull
-    public String readFileToJson(@NonNull String path) throws IOException {
+    private String readFileToJson(@NonNull String path) throws IOException {
         FileInputStream inputStream = new FileInputStream(path);
         Base64InputStream output64 = new Base64InputStream(inputStream, Base64.DEFAULT);
         BufferedReader r = new BufferedReader(new InputStreamReader(output64));

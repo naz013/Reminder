@@ -21,7 +21,6 @@ import com.elementary.tasks.R;
 import com.elementary.tasks.core.ThemedActivity;
 import com.elementary.tasks.core.app_widgets.UpdatesHelper;
 import com.elementary.tasks.core.cloud.Google;
-import com.elementary.tasks.core.controller.EventControl;
 import com.elementary.tasks.core.controller.EventControlFactory;
 import com.elementary.tasks.core.utils.Constants;
 import com.elementary.tasks.core.utils.Dialogues;
@@ -403,7 +402,10 @@ public class TaskActivity extends ThemedActivity {
 
     private String saveReminder(String task) {
         GroupItem group = RealmDb.getInstance().getDefaultGroup();
-        if (group == null) return null;
+        String groupId = "";
+        if (group != null) {
+            groupId = group.getUuId();
+        }
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(mYear, mMonth, mDay, mHour, mMinute);
@@ -411,13 +413,10 @@ public class TaskActivity extends ThemedActivity {
         Reminder reminder = new Reminder();
         reminder.setType(Reminder.BY_DATE);
         reminder.setSummary(task);
-        reminder.setGroupUuId(group.getUuId());
+        reminder.setGroupUuId(groupId);
         reminder.setStartTime(TimeUtil.getGmtFromDateTime(due));
         reminder.setEventTime(TimeUtil.getGmtFromDateTime(due));
-        RealmDb.getInstance().saveReminder(reminder, () -> {
-            EventControl control = EventControlFactory.getController(TaskActivity.this, reminder);
-            control.start();
-        });
+        RealmDb.getInstance().saveReminder(reminder, () -> EventControlFactory.getController(TaskActivity.this, reminder).start());
         return reminder.getUuId();
     }
 

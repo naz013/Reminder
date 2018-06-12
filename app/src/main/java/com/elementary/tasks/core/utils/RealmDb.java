@@ -425,7 +425,8 @@ public class RealmDb {
     }
 
     @Nullable
-    public GroupItem getGroup(@NonNull String id) {
+    public GroupItem getGroup(@Nullable String id) {
+        if (id == null) return null;
         Realm realm = getRealm();
         if (realm != null) {
             RealmGroup object = realm.where(RealmGroup.class).equalTo("uuId", id).findFirst();
