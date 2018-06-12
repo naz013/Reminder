@@ -131,7 +131,11 @@ public class PhotoSelectionUtil {
                 File photoFile = createImageFile();
                 imageUri = UriUtil.getUri(activity, photoFile);
                 pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                activity.startActivityForResult(pictureIntent, PICK_FROM_CAMERA);
+                try {
+                    activity.startActivityForResult(pictureIntent, PICK_FROM_CAMERA);
+                } catch (SecurityException e) {
+                    checkCameraPermission(REQUEST_CAMERA);
+                }
             }
         } else {
             ContentValues values = new ContentValues();
@@ -139,8 +143,11 @@ public class PhotoSelectionUtil {
             values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
             imageUri = activity.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
             pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-            activity.startActivityForResult(pictureIntent, PICK_FROM_CAMERA);
-
+            try {
+                activity.startActivityForResult(pictureIntent, PICK_FROM_CAMERA);
+            } catch (SecurityException e) {
+                checkCameraPermission(REQUEST_CAMERA);
+            }
         }
     }
 
