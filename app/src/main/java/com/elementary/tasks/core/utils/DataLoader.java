@@ -3,7 +3,6 @@ package com.elementary.tasks.core.utils;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 
-import com.elementary.tasks.core.interfaces.RealmCallback;
 import com.elementary.tasks.reminder.models.Reminder;
 
 import java.util.List;
@@ -27,11 +26,11 @@ public class DataLoader {
 
     private static Handler handler = new Handler();
 
-    public static void loadActiveReminder(@NonNull RealmCallback<List<Reminder>> callback) {
+    public static void loadActiveReminder(@NonNull RealmDb.RealmCallback<List<Reminder>> callback) {
         RealmDb.getInstance().getActiveReminders(result -> handler.post(() -> callback.onDataLoaded(result)));
     }
 
-    public static void loadArchivedReminder(@NonNull RealmCallback<List<Reminder>> callback) {
+    public static void loadArchivedReminder(@NonNull RealmDb.RealmCallback<List<Reminder>> callback) {
         RealmDb.getInstance().getArchivedReminders(result -> handler.post(() -> callback.onDataLoaded(result)));
     }
 }

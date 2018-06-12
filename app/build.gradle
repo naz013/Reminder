@@ -70,8 +70,8 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            productFlavors.pro.proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            productFlavors.free.proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
             zipAlignEnabled true
             jniDebuggable false
@@ -146,14 +146,14 @@ dependencies {
     implementation "com.android.support:design:$support_version"
     implementation "com.android.support:support-emoji-appcompat:$support_version"
 
-    implementation "com.google.android.gms:play-services-auth:$gms_version"
-    implementation "com.google.android.gms:play-services-drive:$gms_version"
-    implementation "com.google.android.gms:play-services-location:$gms_version"
-    implementation "com.google.android.gms:play-services-maps:$gms_version"
-    implementation "com.google.android.gms:play-services-analytics:$gms_version"
-    implementation "com.google.android.gms:play-services-wearable:$gms_version"
-    implementation "com.google.android.gms:play-services-gcm:$gms_version"
-    implementation("com.google.firebase:firebase-config:$gms_version") {
+    implementation 'com.google.android.gms:play-services-auth:15.0.1'
+    implementation 'com.google.android.gms:play-services-drive:15.0.1'
+    implementation 'com.google.android.gms:play-services-location:15.0.1'
+    implementation 'com.google.android.gms:play-services-maps:15.0.1'
+    implementation 'com.google.android.gms:play-services-analytics:16.0.0'
+    implementation 'com.google.android.gms:play-services-wearable:15.0.1'
+    implementation 'com.google.android.gms:play-services-gcm:15.0.1'
+    implementation('com.google.firebase:firebase-config:16.0.0') {
         exclude group: 'com.google.guava', module: 'guava-jdk5'
     }
 

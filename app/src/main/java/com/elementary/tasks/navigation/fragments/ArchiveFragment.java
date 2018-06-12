@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.elementary.tasks.R;
-import com.elementary.tasks.core.interfaces.RealmCallback;
 import com.elementary.tasks.core.utils.CalendarUtils;
 import com.elementary.tasks.core.utils.Constants;
 import com.elementary.tasks.core.utils.DataLoader;
@@ -116,7 +115,7 @@ public class ArchiveFragment extends BaseNavigationFragment implements FilterCal
         public void onItemLongClicked(int position, View view) {
         }
     };
-    private RealmCallback<List<Reminder>> mLoadCallback = this::showData;
+    private RealmDb.RealmCallback<List<Reminder>> mLoadCallback = this::showData;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

@@ -24,7 +24,6 @@ import com.elementary.tasks.R;
 import com.elementary.tasks.core.async.SyncTask;
 import com.elementary.tasks.core.controller.EventControl;
 import com.elementary.tasks.core.controller.EventControlFactory;
-import com.elementary.tasks.core.interfaces.RealmCallback;
 import com.elementary.tasks.core.utils.Constants;
 import com.elementary.tasks.core.utils.DataLoader;
 import com.elementary.tasks.core.utils.Dialogues;
@@ -132,7 +131,7 @@ public class RemindersFragment extends BaseNavigationFragment implements SyncTas
         public void onItemLongClicked(int position, View view) {
         }
     };
-    private RealmCallback<List<Reminder>> mLoadCallback = this::showData;
+    private RealmDb.RealmCallback<List<Reminder>> mLoadCallback = this::showData;
 
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {

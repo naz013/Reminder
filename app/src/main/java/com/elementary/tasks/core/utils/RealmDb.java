@@ -2,6 +2,7 @@ package com.elementary.tasks.core.utils;
 
 import android.app.AlarmManager;
 import android.content.Context;
+import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -12,7 +13,6 @@ import com.elementary.tasks.birthdays.RealmBirthdayItem;
 import com.elementary.tasks.core.calendar.CalendarEvent;
 import com.elementary.tasks.core.calendar.RealmCalendarEvent;
 import com.elementary.tasks.core.cloud.Google;
-import com.elementary.tasks.core.interfaces.RealmCallback;
 import com.elementary.tasks.google_tasks.RealmTask;
 import com.elementary.tasks.google_tasks.RealmTaskList;
 import com.elementary.tasks.google_tasks.TaskItem;
@@ -1054,5 +1054,10 @@ public class RealmDb {
             }
         }
         return items;
+    }
+
+    @Keep
+    public interface RealmCallback<T> {
+        void onDataLoaded(T result);
     }
 }

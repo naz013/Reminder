@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.elementary.tasks.R;
 import com.elementary.tasks.core.app_widgets.UpdatesHelper;
 import com.elementary.tasks.core.calendar.CalendarEvent;
-import com.elementary.tasks.core.controller.EventControl;
 import com.elementary.tasks.core.controller.EventControlFactory;
 import com.elementary.tasks.core.services.AlarmReceiver;
 import com.elementary.tasks.core.services.PermanentReminderReceiver;
@@ -33,6 +32,7 @@ import com.elementary.tasks.core.utils.TimeUtil;
 import com.elementary.tasks.core.views.roboto.RoboButton;
 import com.elementary.tasks.core.views.roboto.RoboCheckBox;
 import com.elementary.tasks.databinding.FragmentEventsImportBinding;
+import com.elementary.tasks.groups.GroupItem;
 import com.elementary.tasks.navigation.settings.BaseSettingsFragment;
 import com.elementary.tasks.reminder.models.Reminder;
 
@@ -330,7 +330,11 @@ public class FragmentEventsImport extends BaseSettingsFragment implements View.O
                                 }
                             }
                             String summary = item.getTitle();
-                            String categoryId = RealmDb.getInstance().getDefaultGroup().getUuId();
+                            String categoryId = "";
+                            GroupItem groupItem = RealmDb.getInstance().getDefaultGroup();
+                            if (groupItem != null) {
+                                categoryId = groupItem.getUuId();
+                            }
                             Calendar calendar = Calendar.getInstance();
                             long dtStart = item.getDtStart();
                             calendar.setTimeInMillis(dtStart);
