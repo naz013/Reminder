@@ -291,18 +291,19 @@ public class FlextCalendarFragment extends BaseNavigationFragment implements Eve
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         retrieveInitialArgs();
         binding = FragmentFlextCalBinding.inflate(inflater, container, false);
-        binding.loaderView.setVisibility(View.VISIBLE);
-        WeekdayArrayAdapter weekdaysAdapter = getNewWeekdayAdapter();
-        binding.weekdayGridview.setAdapter(weekdaysAdapter);
-        setupDateGridPages();
-        refreshView();
-        if (caldroidListener != null) {
-            caldroidListener.onViewCreated();
-        }
+        try {
+            binding.loaderView.setVisibility(View.VISIBLE);
+            WeekdayArrayAdapter weekdaysAdapter = getNewWeekdayAdapter();
+            binding.weekdayGridview.setAdapter(weekdaysAdapter);
+            setupDateGridPages();
+            refreshView();
+            if (caldroidListener != null) {
+                caldroidListener.onViewCreated();
+            }
+        } catch (NullPointerException ignored) {}
         return binding.getRoot();
     }
 
