@@ -159,6 +159,9 @@ public class FragmentEventsImport extends BaseSettingsFragment implements View.O
     }
 
     private void loadCalendars() {
+        if (!checkCalendarPerm()) {
+            return;
+        }
         list = CalendarUtils.getCalendarsList(getContext());
         if (list == null || list.size() == 0) {
             Toast.makeText(getContext(), getString(R.string.no_calendars_found), Toast.LENGTH_SHORT).show();
@@ -178,9 +181,7 @@ public class FragmentEventsImport extends BaseSettingsFragment implements View.O
     @Override
     public void onResume() {
         super.onResume();
-        if (checkCalendarPerm()) {
-            loadCalendars();
-        }
+        loadCalendars();
         if (getCallback() != null) {
             getCallback().onTitleChange(getString(R.string.import_events));
             getCallback().onFragmentSelect(this);
@@ -196,20 +197,26 @@ public class FragmentEventsImport extends BaseSettingsFragment implements View.O
         }
     }
 
+    private boolean checkWriteCalendarPerm() {
+        if (Permissions.checkPermission(getActivity(), Permissions.READ_CALENDAR, Permissions.WRITE_CALENDAR)) {
+            return true;
+        } else {
+            Permissions.requestPermission(getActivity(), 102, Permissions.READ_CALENDAR, Permissions.WRITE_CALENDAR);
+            return false;
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button:
-                if (Permissions.checkPermission(getContext(), Permissions.READ_CALENDAR, Permissions.WRITE_CALENDAR)) {
-                    importEvents();
-                } else {
-                    Permissions.requestPermission(getActivity(), 102, Permissions.READ_CALENDAR, Permissions.WRITE_CALENDAR);
-                }
+                importEvents();
                 break;
         }
     }
 
     private void importEvents() {
+        if (!checkWriteCalendarPerm()) return;
         if (list == null || list.isEmpty()) {
             Toast.makeText(getContext(), getString(R.string.no_calendars_found), Toast.LENGTH_SHORT).show();
             return;
