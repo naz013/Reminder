@@ -209,8 +209,7 @@ public final class TimeUtil {
             GMT_DATE_FORMAT.setTimeZone(TimeZone.getTimeZone(GMT));
             Date date = GMT_DATE_FORMAT.parse(dateTime);
             calendar.setTime(date);
-        } catch (ParseException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace();
+        } catch (Exception ignored) {
         }
         return calendar.getTimeInMillis();
     }
