@@ -181,7 +181,11 @@ public final class TimeUtil {
     @NonNull
     public static String getGmtDateTime() {
         GMT_DATE_FORMAT.setTimeZone(TimeZone.getTimeZone(GMT));
-        return GMT_DATE_FORMAT.format(new Date());
+        try {
+            return GMT_DATE_FORMAT.format(new Date());
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     @NonNull
@@ -189,7 +193,11 @@ public final class TimeUtil {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(date);
         GMT_DATE_FORMAT.setTimeZone(TimeZone.getTimeZone(GMT));
-        return GMT_DATE_FORMAT.format(calendar.getTime());
+        try {
+            return GMT_DATE_FORMAT.format(calendar.getTime());
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     public static long getDateTimeFromGmt(@Nullable String dateTime) {
