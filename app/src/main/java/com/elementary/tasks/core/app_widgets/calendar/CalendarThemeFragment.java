@@ -2,6 +2,7 @@ package com.elementary.tasks.core.app_widgets.calendar;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.BadParcelableException;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -70,9 +71,12 @@ public class CalendarThemeFragment extends BaseNavigationFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle intent = getArguments();
-        pageNumber = intent.getInt(ARGUMENT_PAGE_NUMBER);
-        List<CalendarTheme> list = intent.getParcelableArrayList(ARGUMENT_DATA);
-        if (list != null) this.list = list;
+        try {
+            pageNumber = intent.getInt(ARGUMENT_PAGE_NUMBER);
+            List<CalendarTheme> list = intent.getParcelableArrayList(ARGUMENT_DATA);
+            if (list != null) this.list = list;
+        } catch (BadParcelableException ignored) {
+        }
     }
 
     @Override
