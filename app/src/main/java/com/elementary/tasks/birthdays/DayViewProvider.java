@@ -354,32 +354,35 @@ public class DayViewProvider {
                 return;
             }
             if (isCanceled) return;
-            Collections.sort(res, (eventsItem, t1) -> {
-                long time1 = 0, time2 = 0;
-                if (eventsItem.getObject() instanceof BirthdayItem) {
-                    BirthdayItem item = (BirthdayItem) eventsItem.getObject();
-                    TimeUtil.DateItem dateItem = TimeUtil.getFutureBirthdayDate(mContext, item.getDate());
-                    if (dateItem != null) {
-                        Calendar calendar = dateItem.getCalendar();
-                        time1 = calendar.getTimeInMillis();
+            try {
+                Collections.sort(res, (eventsItem, t1) -> {
+                    long time1 = 0, time2 = 0;
+                    if (eventsItem.getObject() instanceof BirthdayItem) {
+                        BirthdayItem item = (BirthdayItem) eventsItem.getObject();
+                        TimeUtil.DateItem dateItem = TimeUtil.getFutureBirthdayDate(mContext, item.getDate());
+                        if (dateItem != null) {
+                            Calendar calendar = dateItem.getCalendar();
+                            time1 = calendar.getTimeInMillis();
+                        }
+                    } else if (eventsItem.getObject() instanceof Reminder) {
+                        Reminder reminder = (Reminder) eventsItem.getObject();
+                        time1 = TimeUtil.getDateTimeFromGmt(reminder.getEventTime());
                     }
-                } else if (eventsItem.getObject() instanceof Reminder) {
-                    Reminder reminder = (Reminder) eventsItem.getObject();
-                    time1 = TimeUtil.getDateTimeFromGmt(reminder.getEventTime());
-                }
-                if (t1.getObject() instanceof BirthdayItem) {
-                    BirthdayItem item = (BirthdayItem) t1.getObject();
-                    TimeUtil.DateItem dateItem = TimeUtil.getFutureBirthdayDate(mContext, item.getDate());
-                    if (dateItem != null) {
-                        Calendar calendar = dateItem.getCalendar();
-                        time2 = calendar.getTimeInMillis();
+                    if (t1.getObject() instanceof BirthdayItem) {
+                        BirthdayItem item = (BirthdayItem) t1.getObject();
+                        TimeUtil.DateItem dateItem = TimeUtil.getFutureBirthdayDate(mContext, item.getDate());
+                        if (dateItem != null) {
+                            Calendar calendar = dateItem.getCalendar();
+                            time2 = calendar.getTimeInMillis();
+                        }
+                    } else if (t1.getObject() instanceof Reminder) {
+                        Reminder reminder = (Reminder) t1.getObject();
+                        time2 = TimeUtil.getDateTimeFromGmt(reminder.getEventTime());
                     }
-                } else if (t1.getObject() instanceof Reminder) {
-                    Reminder reminder = (Reminder) t1.getObject();
-                    time2 = TimeUtil.getDateTimeFromGmt(reminder.getEventTime());
-                }
-                return (int) (time1 - time2);
-            });
+                    return (int) (time1 - time2);
+                });
+            } catch (Exception ignored) {
+            }
             if (isCanceled) return;
             mHandler.post(() -> notifyEnd(callback, res));
         }
