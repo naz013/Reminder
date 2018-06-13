@@ -91,13 +91,16 @@ public class CropFragment extends BitmapFragment {
     @Override
     public NoteImage getImage() {
         Bitmap cropped = binding.cropImageView.getCroppedImage();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        cropped.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-        NoteImage item = ImageSingleton.getInstance().getItem();
-        if (item != null) {
-            item.setImage(outputStream.toByteArray());
+        if (cropped != null) {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            cropped.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            NoteImage item = ImageSingleton.getInstance().getItem();
+            if (item != null) {
+                item.setImage(outputStream.toByteArray());
+            }
+            return item;
         }
-        return item;
+        return null;
     }
 
     @Override

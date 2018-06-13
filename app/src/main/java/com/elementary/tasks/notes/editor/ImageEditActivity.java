@@ -19,6 +19,7 @@ import com.elementary.tasks.core.utils.LogUtil;
 import com.elementary.tasks.core.utils.Module;
 import com.elementary.tasks.core.utils.RealmDb;
 import com.elementary.tasks.databinding.ActivityImageEditBinding;
+import com.elementary.tasks.notes.NoteImage;
 
 /**
  * Copyright 2017 Nazar Suhovich
@@ -206,8 +207,9 @@ public class ImageEditActivity extends ThemedActivity {
     }
 
     private void saveImage() {
-        if (fragment.getImage() != null) {
-            RealmDb.getInstance().saveImage(fragment.getImage());
+        NoteImage noteImage = fragment.getImage();
+        if (noteImage != null) {
+            RealmDb.getInstance().saveImage(noteImage);
         }
         ImageSingleton.getInstance().setItem(null);
         setResult(RESULT_OK);
