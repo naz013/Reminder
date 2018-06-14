@@ -3,10 +3,12 @@ package com.elementary.tasks.notes;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.Toolbar;
@@ -28,6 +30,7 @@ import com.elementary.tasks.core.utils.Dialogues;
 import com.elementary.tasks.core.utils.MeasureUtils;
 import com.elementary.tasks.core.utils.Module;
 import com.elementary.tasks.core.utils.Notifier;
+import com.elementary.tasks.core.utils.Permissions;
 import com.elementary.tasks.core.utils.RealmDb;
 import com.elementary.tasks.core.utils.TelephonyUtil;
 import com.elementary.tasks.core.utils.TimeUtil;
@@ -56,6 +59,8 @@ import java.util.List;
  */
 
 public class NotePreviewActivity extends ThemedActivity {
+
+    private static final int SEND_CODE = 122455;
 
     private NoteItem mItem;
     @Nullable
@@ -204,8 +209,11 @@ public class NotePreviewActivity extends ThemedActivity {
     }
 
     private void hideProgress() {
-        if (mProgress != null && mProgress.isShowing()) {
-            mProgress.dismiss();
+        try {
+            if (mProgress != null && mProgress.isShowing()) {
+                mProgress.dismiss();
+            }
+        } catch (Exception ignored) {
         }
     }
 
@@ -214,6 +222,10 @@ public class NotePreviewActivity extends ThemedActivity {
     }
 
     private void shareNote() {
+        if (!Permissions.checkPermission(this, Permissions.WRITE_EXTERNAL, Permissions.READ_EXTERNAL)) {
+            Permissions.requestPermission(this, SEND_CODE, Permissions.READ_EXTERNAL, Permissions.WRITE_EXTERNAL);
+            return;
+        }
         showProgress();
         BackupTool.CreateCallback callback = this::sendNote;
         new Thread(() -> BackupTool.getInstance().createNote(mItem, callback)).start();
@@ -221,6 +233,7 @@ public class NotePreviewActivity extends ThemedActivity {
 
     private void sendNote(File file) {
         hideProgress();
+        if (isFinishing()) return;
         if (!file.exists() || !file.canRead()) {
             Toast.makeText(this, getString(R.string.error_sending), Toast.LENGTH_SHORT).show();
             return;
@@ -303,5 +316,18 @@ public class NotePreviewActivity extends ThemedActivity {
 
     private void deleteNote() {
         RealmDb.getInstance().deleteNote(mItem);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length == 0) return;
+        switch (requestCode) {
+            case SEND_CODE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    shareNote();
+                }
+                break;
+        }
     }
 }

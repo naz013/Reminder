@@ -438,8 +438,11 @@ public class CreateNoteActivity extends ThemedActivity implements PhotoSelection
     }
 
     private void hideProgress() {
-        if (mProgress != null && mProgress.isShowing()) {
-            mProgress.dismiss();
+        try {
+            if (mProgress != null && mProgress.isShowing()) {
+                mProgress.dismiss();
+            }
+        } catch (Exception ignored) {
         }
     }
 
@@ -459,6 +462,7 @@ public class CreateNoteActivity extends ThemedActivity implements PhotoSelection
 
     private void sendNote(File file) {
         hideProgress();
+        if (isFinishing()) return;
         if (!file.exists() || !file.canRead()) {
             Toast.makeText(this, getString(R.string.error_sending), Toast.LENGTH_SHORT).show();
             return;
