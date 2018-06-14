@@ -505,7 +505,11 @@ public class ReminderDialogActivity extends BaseNotificationActivity {
         PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent(SENT), 0);
         registerReceiver(sentReceiver = new SendReceiver(mSendListener), new IntentFilter(SENT));
         SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(mReminder.getTarget(), null, getSummary(), sentPI, null);
+        try {
+            sms.sendTextMessage(mReminder.getTarget(), null, getSummary(), sentPI, null);
+        } catch (SecurityException e) {
+            Toast.makeText(this, getString(R.string.error_sending), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void showReminder() {
@@ -799,6 +803,7 @@ public class ReminderDialogActivity extends BaseNotificationActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length == 0) return;
         switch (requestCode) {
             case CALL_PERM:
