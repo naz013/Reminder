@@ -100,15 +100,12 @@ public class PhotoSelectionUtil {
     }
 
     private boolean checkCameraPermission(int code) {
-        if (Module.isNougat()) {
-            if (!Permissions.checkPermission(activity, Permissions.READ_EXTERNAL, Permissions.WRITE_EXTERNAL, Permissions.CAMERA)) {
-                Permissions.requestPermission(activity, code, Permissions.READ_EXTERNAL, Permissions.WRITE_EXTERNAL, Permissions.CAMERA);
-                return false;
-            } else {
-                return true;
-            }
+        if (!Permissions.checkPermission(activity, Permissions.READ_EXTERNAL, Permissions.WRITE_EXTERNAL, Permissions.CAMERA)) {
+            Permissions.requestPermission(activity, code, Permissions.READ_EXTERNAL, Permissions.WRITE_EXTERNAL, Permissions.CAMERA);
+            return false;
+        } else {
+            return true;
         }
-        return true;
     }
 
     private void showPhoto(@NonNull Uri imageUri) {
@@ -138,12 +135,12 @@ public class PhotoSelectionUtil {
                 }
             }
         } else {
-            ContentValues values = new ContentValues();
-            values.put(MediaStore.Images.Media.TITLE, "Picture");
-            values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
-            imageUri = activity.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
             try {
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.TITLE, "Picture");
+                values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
+                imageUri = activity.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                 activity.startActivityForResult(pictureIntent, PICK_FROM_CAMERA);
             } catch (SecurityException e) {
                 checkCameraPermission(REQUEST_CAMERA);

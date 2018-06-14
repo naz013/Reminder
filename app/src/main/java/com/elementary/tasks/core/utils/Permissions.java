@@ -1,11 +1,9 @@
 package com.elementary.tasks.core.utils;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 
@@ -25,7 +23,6 @@ import android.support.v4.content.ContextCompat;
  * limitations under the License.
  */
 
-@TargetApi(Build.VERSION_CODES.M)
 public class Permissions {
 
     public static final String READ_CONTACTS = Manifest.permission.READ_CONTACTS;
@@ -72,13 +69,15 @@ public class Permissions {
     }
 
     public static void requestPermission(Activity a, int requestCode, String... permission) {
-        int size = permission.length;
-        if (size == 1) {
-            a.requestPermissions(permission, requestCode);
-        } else {
-            String[] array = new String[size];
-            System.arraycopy(permission, 0, array, 0, size);
-            a.requestPermissions(array, requestCode);
+        if (Module.isMarshmallow()) {
+            int size = permission.length;
+            if (size == 1) {
+                a.requestPermissions(permission, requestCode);
+            } else {
+                String[] array = new String[size];
+                System.arraycopy(permission, 0, array, 0, size);
+                a.requestPermissions(array, requestCode);
+            }
         }
     }
 }
