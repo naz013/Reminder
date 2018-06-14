@@ -343,13 +343,16 @@ public class FlextCalendarFragment extends BaseNavigationFragment implements Eve
     public void onReady() {
         Timber.d("onReady: ");
         if (!isAdded() || getActivity() == null) return;
-        binding.loaderView.setVisibility(View.GONE);
-        EventsDataProvider provider = CalendarSingleton.getInstance().getProvider();
-        if (provider != null) {
-            this.mLastMap.clear();
-            this.mLastMap.putAll(provider.getEvents());
+        try {
+            binding.loaderView.setVisibility(View.GONE);
+            EventsDataProvider provider = CalendarSingleton.getInstance().getProvider();
+            if (provider != null) {
+                this.mLastMap.clear();
+                this.mLastMap.putAll(provider.getEvents());
+            }
+            refreshFragments();
+        } catch (Exception ignored) {
         }
-        refreshFragments();
     }
 
     private void refreshFragments() {
