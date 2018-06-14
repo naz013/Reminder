@@ -481,7 +481,7 @@ public final class BackupTool {
     public void createNote(@Nullable NoteItem item, @Nullable CreateCallback callback) {
         if (item == null) return;
         WeakReference<String> jsonData = new WeakReference<>(new Gson().toJson(item));
-        File file = null;
+        File file;
         File dir = MemoryUtil.getMailDir();
         if (dir != null) {
             String exportFileName = item.getKey() + FileConfig.FILE_NAME_NOTE;
@@ -489,14 +489,14 @@ public final class BackupTool {
             try {
                 writeFile(file, jsonData.get());
                 jsonData.clear();
-            } catch (IOException e) {
+                if (callback != null) {
+                    callback.onReady(file);
+                }
+            } catch (IOException | SecurityException e) {
                 e.printStackTrace();
             }
         } else {
             LogUtil.i(TAG, "Couldn't find external storage!");
-        }
-        if (callback != null) {
-            callback.onReady(file);
         }
     }
 
@@ -505,7 +505,7 @@ public final class BackupTool {
         InputStream inputStream = null;
         try {
             inputStream = cr.openInputStream(name);
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException | SecurityException e) {
             e.printStackTrace();
         }
         if (inputStream == null) {
@@ -529,20 +529,25 @@ public final class BackupTool {
 
     @NonNull
     private String readFileToJson(@NonNull String path) throws IOException {
-        FileInputStream inputStream = new FileInputStream(path);
-        Base64InputStream output64 = new Base64InputStream(inputStream, Base64.DEFAULT);
-        BufferedReader r = new BufferedReader(new InputStreamReader(output64));
-        StringBuilder total = new StringBuilder();
-        String line;
-        while ((line = r.readLine()) != null) {
-            total.append(line);
-        }
-        output64.close();
-        inputStream.close();
-        String res = total.toString();
-        if ((res.startsWith("{") && res.endsWith("}")) || (res.startsWith("[") && res.endsWith("]"))) return res;
-        else {
-            throw new IOException("Bad JSON");
+        try {
+            FileInputStream inputStream = new FileInputStream(path);
+            Base64InputStream output64 = new Base64InputStream(inputStream, Base64.DEFAULT);
+            BufferedReader r = new BufferedReader(new InputStreamReader(output64));
+            StringBuilder total = new StringBuilder();
+            String line;
+            while ((line = r.readLine()) != null) {
+                total.append(line);
+            }
+            output64.close();
+            inputStream.close();
+            String res = total.toString();
+            if ((res.startsWith("{") && res.endsWith("}")) || (res.startsWith("[") && res.endsWith("]")))
+                return res;
+            else {
+                throw new IOException("Bad JSON");
+            }
+        } catch (SecurityException e) {
+            throw new IOException("No write permission");
         }
     }
 
@@ -556,28 +561,32 @@ public final class BackupTool {
     @Nullable
     private String writeFile(@NonNull File file, @Nullable String data) throws IOException {
         if (data == null) return null;
-        InputStream inputStream = new ByteArrayInputStream(data.getBytes());
-        byte[] buffer = new byte[8192];
-        int bytesRead;
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        Base64OutputStream output64 = new Base64OutputStream(output, Base64.DEFAULT);
         try {
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                output64.write(buffer, 0, bytesRead);
+            InputStream inputStream = new ByteArrayInputStream(data.getBytes());
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            Base64OutputStream output64 = new Base64OutputStream(output, Base64.DEFAULT);
+            try {
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    output64.write(buffer, 0, bytesRead);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        output64.close();
+            output64.close();
 
-        if (file.exists()) {
-            file.delete();
+            if (file.exists()) {
+                file.delete();
+            }
+            FileWriter fw = new FileWriter(file);
+            fw.write(output.toString());
+            fw.close();
+            output.close();
+            return file.toString();
+        } catch (SecurityException e) {
+            return null;
         }
-        FileWriter fw = new FileWriter(file);
-        fw.write(output.toString());
-        fw.close();
-        output.close();
-        return file.toString();
     }
 
     public interface CreateCallback {
