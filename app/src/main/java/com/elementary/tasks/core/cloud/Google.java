@@ -293,7 +293,7 @@ public class Google {
                 About.StorageQuota quota = about.getStorageQuota();
                 return new UserItem(about.getUser().getDisplayName(), quota.getLimit(),
                         quota.getUsage(), countFiles(), about.getUser().getPhotoLink());
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
