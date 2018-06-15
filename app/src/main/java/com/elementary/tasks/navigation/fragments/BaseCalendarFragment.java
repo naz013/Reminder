@@ -126,12 +126,16 @@ public abstract class BaseCalendarFragment extends BaseNavigationFragment {
     }
 
     private void addReminder() {
-        getActivity().startActivityForResult(new Intent(getContext(), AddReminderActivity.class)
-                .putExtra(Constants.INTENT_DATE, dateMills), REMINDER_CODE);
+        if (isAdded() && getActivity() != null) {
+            getActivity().startActivityForResult(new Intent(getActivity(), AddReminderActivity.class)
+                    .putExtra(Constants.INTENT_DATE, dateMills), REMINDER_CODE);
+        }
     }
 
     private void addBirthday() {
-        getActivity().startActivityForResult(new Intent(getContext(), AddBirthdayActivity.class)
-                .putExtra(Constants.INTENT_DATE, dateMills), BD_CODE);
+        if (isAdded() && getActivity() != null) {
+            getActivity().startActivityForResult(new Intent(getActivity(), AddBirthdayActivity.class)
+                    .putExtra(Constants.INTENT_DATE, dateMills), BD_CODE);
+        }
     }
 }
