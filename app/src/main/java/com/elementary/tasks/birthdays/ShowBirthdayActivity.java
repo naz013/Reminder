@@ -418,6 +418,7 @@ public class ShowBirthdayActivity extends BaseNotificationActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length == 0) return;
         switch (requestCode) {
             case CALL_PERM:

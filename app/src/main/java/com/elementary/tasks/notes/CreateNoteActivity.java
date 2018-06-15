@@ -783,6 +783,7 @@ public class CreateNoteActivity extends ThemedActivity implements PhotoSelection
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length == 0) return;
         if (photoSelectionUtil != null)
             photoSelectionUtil.onRequestPermissionsResult(requestCode, permissions, grantResults);

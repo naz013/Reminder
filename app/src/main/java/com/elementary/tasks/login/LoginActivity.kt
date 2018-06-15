@@ -3,6 +3,7 @@ package com.elementary.tasks.login
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.databinding.DataBindingUtil
@@ -299,11 +300,21 @@ class LoginActivity : ThemedActivity() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (grantResults.isEmpty()) return
         when (requestCode) {
-            PERM -> googleLoginClick()
-            PERM_DROPBOX -> loginToDropbox()
-            PERM_LOCAL -> restoreLocalData()
-            PERM_BIRTH -> importBirthdays()
+            PERM -> {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) googleLoginClick()
+            }
+            PERM_DROPBOX -> {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) loginToDropbox()
+            }
+            PERM_LOCAL -> {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) restoreLocalData()
+            }
+            PERM_BIRTH -> {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) importBirthdays()
+            }
         }
     }
 }
