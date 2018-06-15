@@ -83,13 +83,16 @@ public class ReminderApp extends MultiDexApplication {
         Notifier.createChannels(this);
         Fabric.with(this, new Crashlytics(), new Answers());
         Prefs.getInstance(this);
-        Realm.init(this);
-        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder()
-                .schemaVersion(DB_VERSION)
-                .name(BuildConfig.IS_PRO ? NAME_DB_PRO : NAME_DB)
-                .migration(new Migration())
-                .build();
-        Realm.setDefaultConfiguration(realmConfiguration);
+        try {
+            Realm.init(this);
+            RealmConfiguration realmConfiguration = new RealmConfiguration.Builder()
+                    .schemaVersion(DB_VERSION)
+                    .name(BuildConfig.IS_PRO ? NAME_DB_PRO : NAME_DB)
+                    .migration(new Migration())
+                    .build();
+            Realm.setDefaultConfiguration(realmConfiguration);
+        } catch (Exception ignored) {
+        }
         JobManager.create(this).addJobCreator(tag -> new EventJobService());
     }
 
