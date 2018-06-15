@@ -58,7 +58,7 @@ public class IoHelper {
                 if (mDrive != null && mDrive.getDrive() != null) {
                     mDrive.getDrive().saveSettingsToDrive();
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -83,7 +83,7 @@ public class IoHelper {
     public void restoreGroup(boolean delete) {
         try {
             BackupTool.getInstance().importGroups();
-        } catch (IOException | IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (isConnected) {
@@ -92,7 +92,7 @@ public class IoHelper {
                 if (mDrive != null && mDrive.getDrive() != null) {
                     mDrive.getDrive().downloadGroups(delete);
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -117,7 +117,7 @@ public class IoHelper {
     public void restoreReminder(boolean delete) {
         try {
             BackupTool.getInstance().importReminders(mContext);
-        } catch (IOException | IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (isConnected) {
@@ -126,7 +126,7 @@ public class IoHelper {
                 if (mDrive != null && mDrive.getDrive() != null) {
                     mDrive.getDrive().downloadReminders(mContext, delete);
                 }
-            } catch (IOException | IllegalStateException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -151,7 +151,7 @@ public class IoHelper {
     public void restoreNote(boolean delete) {
         try {
             BackupTool.getInstance().importNotes();
-        } catch (IOException | IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (isConnected) {
@@ -160,7 +160,7 @@ public class IoHelper {
                 if (mDrive != null && mDrive.getDrive() != null) {
                     mDrive.getDrive().downloadNotes(delete);
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -185,7 +185,7 @@ public class IoHelper {
     public void restoreBirthday(boolean delete) {
         try {
             BackupTool.getInstance().importBirthdays();
-        } catch (IOException | IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (isConnected) {
@@ -194,7 +194,7 @@ public class IoHelper {
                 if (mDrive != null && mDrive.getDrive() != null) {
                     mDrive.getDrive().downloadBirthdays(delete);
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -219,7 +219,7 @@ public class IoHelper {
     public void restorePlaces(boolean delete) {
         try {
             BackupTool.getInstance().importPlaces();
-        } catch (IOException | IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (isConnected) {
@@ -228,7 +228,7 @@ public class IoHelper {
                 if (mDrive != null && mDrive.getDrive() != null) {
                     mDrive.getDrive().downloadPlaces(delete);
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -253,7 +253,7 @@ public class IoHelper {
     public void restoreTemplates(boolean delete) {
         try {
             BackupTool.getInstance().importTemplates();
-        } catch (IOException | IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (isConnected) {
@@ -262,7 +262,7 @@ public class IoHelper {
                 if (mDrive != null && mDrive.getDrive() != null) {
                     mDrive.getDrive().downloadTemplates(delete);
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

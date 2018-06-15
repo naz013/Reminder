@@ -555,7 +555,7 @@ public class Google {
                     .execute();
         }
 
-        public void download(boolean deleteBackup, @NonNull Metadata metadata) throws IOException {
+        public void download(boolean deleteBackup, @NonNull Metadata metadata) throws IOException, IllegalArgumentException {
             if (driveService == null) return;
             java.io.File folder = metadata.getFolder();
             if (folder == null || !folder.exists() && !folder.mkdirs()) {
@@ -596,7 +596,7 @@ public class Google {
          *
          * @throws IOException
          */
-        public void downloadTemplates(boolean deleteBackup) throws IOException {
+        public void downloadTemplates(boolean deleteBackup) throws IOException, IllegalArgumentException {
             RealmDb realmDb = RealmDb.getInstance();
             BackupTool backupTool = BackupTool.getInstance();
             download(deleteBackup, new Metadata(FileConfig.FILE_NAME_TEMPLATE, MemoryUtil.getGoogleRemindersDir(), null, file -> {
@@ -613,7 +613,7 @@ public class Google {
          *
          * @throws IOException
          */
-        public void downloadReminders(Context context, boolean deleteBackup) throws IOException {
+        public void downloadReminders(Context context, boolean deleteBackup) throws IOException, IllegalArgumentException {
             RealmDb realmDb = RealmDb.getInstance();
             BackupTool backupTool = BackupTool.getInstance();
             download(deleteBackup, new Metadata(FileConfig.FILE_NAME_REMINDER, MemoryUtil.getGoogleRemindersDir(), null, file -> {
@@ -639,7 +639,7 @@ public class Google {
          *
          * @throws IOException
          */
-        public void downloadPlaces(boolean deleteBackup) throws IOException {
+        public void downloadPlaces(boolean deleteBackup) throws IOException, IllegalArgumentException {
             RealmDb realmDb = RealmDb.getInstance();
             BackupTool backupTool = BackupTool.getInstance();
             download(deleteBackup, new Metadata(FileConfig.FILE_NAME_PLACE, MemoryUtil.getGooglePlacesDir(), null, file -> {
@@ -656,7 +656,7 @@ public class Google {
          *
          * @throws IOException
          */
-        public void downloadNotes(boolean deleteBackup) throws IOException {
+        public void downloadNotes(boolean deleteBackup) throws IOException, IllegalArgumentException {
             RealmDb realmDb = RealmDb.getInstance();
             BackupTool backupTool = BackupTool.getInstance();
             download(deleteBackup, new Metadata(FileConfig.FILE_NAME_NOTE, MemoryUtil.getGoogleNotesDir(), null, file -> {
@@ -673,7 +673,7 @@ public class Google {
          *
          * @throws IOException
          */
-        public void downloadGroups(boolean deleteBackup) throws IOException {
+        public void downloadGroups(boolean deleteBackup) throws IOException, IllegalArgumentException {
             RealmDb realmDb = RealmDb.getInstance();
             BackupTool backupTool = BackupTool.getInstance();
             download(deleteBackup, new Metadata(FileConfig.FILE_NAME_GROUP, MemoryUtil.getGoogleGroupsDir(), null, file -> {
@@ -690,7 +690,7 @@ public class Google {
          *
          * @throws IOException
          */
-        public void downloadBirthdays(boolean deleteBackup) throws IOException {
+        public void downloadBirthdays(boolean deleteBackup) throws IOException, IllegalArgumentException {
             RealmDb realmDb = RealmDb.getInstance();
             BackupTool backupTool = BackupTool.getInstance();
             download(deleteBackup, new Metadata(FileConfig.FILE_NAME_BIRTHDAY, MemoryUtil.getGoogleBirthdaysDir(), null, file -> {
