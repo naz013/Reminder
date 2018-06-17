@@ -1,6 +1,6 @@
 # Reminder - TODO & Task manager
 
-<img src="https://github.com/naz013/Reminder/raw/master/res/app_icon.png" width="100" alt="Reminder">
+<img src="res/Logotype512.png" alt="Reminder" height="100px">
 
 Powerful task manager and reminder.
 
