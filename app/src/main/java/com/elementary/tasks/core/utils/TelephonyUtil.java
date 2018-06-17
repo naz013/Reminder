@@ -1,12 +1,14 @@
 package com.elementary.tasks.core.utils;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.widget.Toast;
+
+import com.elementary.tasks.R;
 
 import java.io.File;
 
@@ -51,7 +53,11 @@ public final class TelephonyUtil {
         Uri uri = UriUtil.getUri(context, file);
         intent.putExtra(Intent.EXTRA_STREAM, uri);
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        context.startActivity(Intent.createChooser(intent, "Send email..."));
+        try {
+            context.startActivity(Intent.createChooser(intent, "Send email..."));
+        } catch (Exception e) {
+            Toast.makeText(context, R.string.app_not_found, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public static void sendMail(Context context, @NonNull String email, String subject,
@@ -66,7 +72,11 @@ public final class TelephonyUtil {
             intent.putExtra(Intent.EXTRA_STREAM, uri);
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
-        context.startActivity(Intent.createChooser(intent, "Send email..."));
+        try {
+            context.startActivity(Intent.createChooser(intent, "Send email..."));
+        } catch (Exception e) {
+            Toast.makeText(context, R.string.app_not_found, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public static void sendSms(String number, Context context) {
@@ -75,7 +85,11 @@ public final class TelephonyUtil {
         }
         Intent smsIntent = new Intent(Intent.ACTION_VIEW);
         smsIntent.setData(Uri.parse("sms:" + number));
-        context.startActivity(smsIntent);
+        try {
+            context.startActivity(smsIntent);
+        } catch (Exception e) {
+            Toast.makeText(context, R.string.app_not_found, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @SuppressWarnings("MissingPermission")
@@ -85,14 +99,19 @@ public final class TelephonyUtil {
         }
         Intent callIntent = new Intent(Intent.ACTION_CALL);
         callIntent.setData(Uri.parse("tel:" + number));
-        context.startActivity(callIntent);
+        try {
+            context.startActivity(callIntent);
+        } catch (Exception e) {
+            Toast.makeText(context, R.string.app_not_found, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public static void openApp(@NonNull String appPackage, Context context) {
         Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(appPackage);
         try {
             context.startActivity(launchIntent);
-        } catch (ActivityNotFoundException ignored) {
+        } catch (Exception e) {
+            Toast.makeText(context, R.string.app_not_found, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -100,7 +119,8 @@ public final class TelephonyUtil {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
         try {
             context.startActivity(browserIntent);
-        } catch (ActivityNotFoundException ignored) {
+        } catch (Exception e) {
+            Toast.makeText(context, R.string.app_not_found, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -108,20 +128,32 @@ public final class TelephonyUtil {
         String uri = "skype:" + number + "?call";
         Intent sky = new Intent("android.intent.action.VIEW");
         sky.setData(Uri.parse(uri));
-        context.startActivity(sky);
+        try {
+            context.startActivity(sky);
+        } catch (Exception e) {
+            Toast.makeText(context, R.string.app_not_found, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public static void skypeVideoCall(String number, Context context) {
         String uri = "skype:" + number + "?call&video=true";
         Intent sky = new Intent("android.intent.action.VIEW");
         sky.setData(Uri.parse(uri));
-        context.startActivity(sky);
+        try {
+            context.startActivity(sky);
+        } catch (Exception e) {
+            Toast.makeText(context, R.string.app_not_found, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public static void skypeChat(String number, Context context) {
         String uri = "skype:" + number + "?chat";
         Intent sky = new Intent("android.intent.action.VIEW");
         sky.setData(Uri.parse(uri));
-        context.startActivity(sky);
+        try {
+            context.startActivity(sky);
+        } catch (Exception r) {
+            Toast.makeText(context, R.string.app_not_found, Toast.LENGTH_SHORT).show();
+        }
     }
 }
