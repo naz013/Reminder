@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.provider.ContactsContract;
 
 import com.elementary.tasks.core.utils.Contacts;
+import com.elementary.tasks.core.utils.ContextHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,62 +27,63 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class ContactsAsync extends AsyncTask<Void, Void, Void> {
+public class ContactsAsync extends AsyncTask<Void, Void, List<ContactItem>> {
 
-    private List<ContactItem> mList;
-    private Context mContext;
+    private ContextHolder mContext;
     private LoadListener mListener;
 
-    public ContactsAsync(Context context, LoadListener listener) {
-        this.mContext = context;
+    ContactsAsync(Context context, LoadListener listener) {
+        this.mContext = new ContextHolder(context);
         this.mListener = listener;
     }
 
     @Override
-    protected Void doInBackground(Void... params) {
-        Cursor cursor = mContext.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI,
-                null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
-        mList = new ArrayList<>();
-        mList.clear();
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                String hasPhone = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
-                int id = cursor.getInt(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
-                Uri uri = Contacts.getPhoto(id);
-                String photo = null;
-                if (uri != null) {
-                    photo = uri.toString();
-                }
-                if (hasPhone.equalsIgnoreCase("1")) {
-                    hasPhone = "true";
-                } else {
-                    hasPhone = "false";
-                }
-                if (name != null && Boolean.parseBoolean(hasPhone)) {
-                    ContactItem data = new ContactItem(name, photo, id);
-                    int pos = getPosition(name);
-                    if (pos == -1) {
-                        mList.add(data);
+    protected List<ContactItem> doInBackground(Void... params) {
+        List<ContactItem> mList = new ArrayList<>();
+        try {
+            Cursor cursor = mContext.getContext().getContentResolver().query(ContactsContract.Contacts.CONTENT_URI,
+                    null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                    String hasPhone = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+                    int id = cursor.getInt(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
+                    Uri uri = Contacts.getPhoto(id);
+                    String photo = null;
+                    if (uri != null) {
+                        photo = uri.toString();
+                    }
+                    if (hasPhone.equalsIgnoreCase("1")) {
+                        hasPhone = "true";
                     } else {
-                        mList.add(pos, data);
+                        hasPhone = "false";
+                    }
+                    if (name != null && Boolean.parseBoolean(hasPhone)) {
+                        ContactItem data = new ContactItem(name, photo, id);
+                        int pos = getPosition(name, mList);
+                        if (pos == -1) {
+                            mList.add(data);
+                        } else {
+                            mList.add(pos, data);
+                        }
                     }
                 }
+                cursor.close();
             }
-            cursor.close();
+        } catch (SecurityException ignored) {
         }
         return null;
     }
 
-    private int getPosition(String name) {
-        if (mList.size() == 0) {
+    private int getPosition(String name, List<ContactItem> list) {
+        if (list.size() == 0) {
             return 0;
         }
         int position = -1;
-        for (ContactItem data : mList) {
+        for (ContactItem data : list) {
             int comp = name.compareTo(data.getName());
             if (comp <= 0) {
-                position = mList.indexOf(data);
+                position = list.indexOf(data);
                 break;
             }
         }
@@ -89,10 +91,10 @@ public class ContactsAsync extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
+    protected void onPostExecute(List<ContactItem> list) {
+        super.onPostExecute(list);
         if (mListener != null) {
-            mListener.onLoaded(mList);
+            mListener.onLoaded(list);
         }
     }
 }

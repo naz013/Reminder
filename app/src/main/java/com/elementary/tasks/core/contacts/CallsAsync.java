@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.provider.CallLog;
 
 import com.elementary.tasks.core.utils.Contacts;
+import com.elementary.tasks.core.utils.ContextHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,62 +27,63 @@ import java.util.List;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class CallsAsync extends AsyncTask<Void, Void, Void> {
+public class CallsAsync extends AsyncTask<Void, Void, List<CallsItem>> {
 
-    private List<CallsItem> mList;
-    private Context mContext;
+    private ContextHolder mContext;
     private CallsLogListener mListener;
 
-    public CallsAsync(Context context, CallsLogListener listener) {
-        this.mContext = context;
+    CallsAsync(Context context, CallsLogListener listener) {
+        this.mContext = new ContextHolder(context);
         this.mListener = listener;
     }
 
     @Override
-    protected Void doInBackground(Void... params) {
-        Cursor c = mContext.getContentResolver().query(CallLog.Calls.CONTENT_URI, null, null, null, null);
-        mList = new ArrayList<>();
-        mList.clear();
-        if (c != null) {
-            int number = c.getColumnIndex(CallLog.Calls.NUMBER);
-            int type = c.getColumnIndex(CallLog.Calls.TYPE);
-            int date = c.getColumnIndex(CallLog.Calls.DATE);
-            int nameIndex = c.getColumnIndex(CallLog.Calls.CACHED_NAME);
-            while (c.moveToNext()) {
-                String phoneNumber = c.getString(number);
-                String callType = c.getString(type);
-                String callDate = c.getString(date);
-                String name = c.getString(nameIndex);
-                int id = Contacts.getIdFromNumber(phoneNumber, mContext);
-                String photo = null;
-                if (id != 0) {
-                    Uri uri = Contacts.getPhoto(id);
-                    if (uri != null) {
-                        photo = uri.toString();
+    protected List<CallsItem> doInBackground(Void... params) {
+        List<CallsItem> mList = new ArrayList<>();
+        try {
+            Cursor c = mContext.getContext().getContentResolver().query(CallLog.Calls.CONTENT_URI, null, null, null, null);
+            if (c != null) {
+                int number = c.getColumnIndex(CallLog.Calls.NUMBER);
+                int type = c.getColumnIndex(CallLog.Calls.TYPE);
+                int date = c.getColumnIndex(CallLog.Calls.DATE);
+                int nameIndex = c.getColumnIndex(CallLog.Calls.CACHED_NAME);
+                while (c.moveToNext()) {
+                    String phoneNumber = c.getString(number);
+                    String callType = c.getString(type);
+                    String callDate = c.getString(date);
+                    String name = c.getString(nameIndex);
+                    int id = Contacts.getIdFromNumber(phoneNumber, mContext.getContext());
+                    String photo = null;
+                    if (id != 0) {
+                        Uri uri = Contacts.getPhoto(id);
+                        if (uri != null) {
+                            photo = uri.toString();
+                        }
+                    }
+
+                    CallsItem data = new CallsItem(name, phoneNumber, photo, Long.valueOf(callDate), id, Integer.parseInt(callType));
+                    int pos = getPosition(data.getDate(), mList);
+                    if (pos == -1) {
+                        mList.add(data);
+                    } else {
+                        mList.add(pos, data);
                     }
                 }
-
-                CallsItem data = new CallsItem(name, phoneNumber, photo, Long.valueOf(callDate), id, Integer.parseInt(callType));
-                int pos = getPosition(data.getDate());
-                if (pos == -1) {
-                    mList.add(data);
-                } else {
-                    mList.add(pos, data);
-                }
+                c.close();
             }
-            c.close();
+        } catch (SecurityException ignored) {
         }
-        return null;
+        return mList;
     }
 
-    private int getPosition(long date) {
-        if (mList.size() == 0) {
+    private int getPosition(long date, List<CallsItem> list) {
+        if (list.size() == 0) {
             return 0;
         }
         int position = -1;
-        for (CallsItem data : mList) {
+        for (CallsItem data : list) {
             if (date > data.getDate()) {
-                position = mList.indexOf(data);
+                position = list.indexOf(data);
                 break;
             }
         }
@@ -89,10 +91,10 @@ public class CallsAsync extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
+    protected void onPostExecute(List<CallsItem> list) {
+        super.onPostExecute(list);
         if (mListener != null) {
-            mListener.onLoaded(mList);
+            mListener.onLoaded(list);
         }
     }
 }
