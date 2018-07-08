@@ -51,6 +51,7 @@ public class RepeatView extends LinearLayout implements TextWatcher {
     private LinearLayout mPredictionView;
     private RoboTextView mEventView;
     private RoboEditText mRepeatInput;
+    private Spinner mRepeatType;
     @Nullable
     private OnRepeatListener mRepeatListener;
     @Nullable
@@ -107,7 +108,7 @@ public class RepeatView extends LinearLayout implements TextWatcher {
         mRepeatInput = findViewById(R.id.repeatTitle);
         mEventView = findViewById(R.id.eventView);
         mPredictionView = findViewById(R.id.predictionView);
-        Spinner mRepeatType = findViewById(R.id.repeatType);
+        mRepeatType = findViewById(R.id.repeatType);
         mRepeatType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -197,6 +198,7 @@ public class RepeatView extends LinearLayout implements TextWatcher {
     }
 
     private void setState(int state) {
+        if (mState == state) return;
         this.mState = state;
         updatePrediction(mRepeatValue);
     }
@@ -214,27 +216,31 @@ public class RepeatView extends LinearLayout implements TextWatcher {
             setProgress(0);
             return;
         }
-        if (mills % (TimeCount.DAY * 7) == 0) {
+        if (fitInterval(mills, TimeCount.DAY * 7)) {
             long progress = mills / (TimeCount.DAY * 7);
             setProgress((int) progress);
-            setState(weeks);
-        } else if (mills % TimeCount.DAY == 0) {
+            mRepeatType.setSelection(weeks);
+        } else if (fitInterval(mills, TimeCount.DAY)) {
             long progress = mills / TimeCount.DAY;
             setProgress((int) progress);
-            setState(days);
-        } else if (mills % TimeCount.HOUR == 0) {
+            mRepeatType.setSelection(days);
+        } else if (fitInterval(mills, TimeCount.HOUR)) {
             long progress = mills / TimeCount.HOUR;
             setProgress((int) progress);
-            setState(hours);
-        } else if (mills % TimeCount.MINUTE == 0) {
+            mRepeatType.setSelection(hours);
+        } else if (fitInterval(mills, TimeCount.MINUTE)) {
             long progress = mills / TimeCount.MINUTE;
             setProgress((int) progress);
-            setState(minutes);
-        } else if (mills % TimeCount.SECOND == 0) {
+            mRepeatType.setSelection(minutes);
+        } else if (fitInterval(mills, TimeCount.SECOND)) {
             long progress = mills / TimeCount.SECOND;
             setProgress((int) progress);
-            setState(seconds);
+            mRepeatType.setSelection(seconds);
         }
+    }
+
+    private boolean fitInterval(long interval, long matcher) {
+        return interval > matcher && (interval % matcher == 0);
     }
 
     private void setProgress(int i) {
@@ -253,9 +259,7 @@ public class RepeatView extends LinearLayout implements TextWatcher {
     }
 
     public long getRepeat() {
-        long rep = mRepeatValue * getMultiplier();
-        LogUtil.d(TAG, "getRepeat: " + rep);
-        return rep;
+        return mRepeatValue * getMultiplier();
     }
 
     @Override

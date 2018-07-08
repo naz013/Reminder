@@ -43,6 +43,7 @@ public class BeforePickerView extends LinearLayout implements TextWatcher {
     private int weeks = 4;
 
     private RoboEditText mBeforeInput;
+    private Spinner beforeType;
     @Nullable
     private InputMethodManager mImm;
 
@@ -69,7 +70,7 @@ public class BeforePickerView extends LinearLayout implements TextWatcher {
         setOrientation(VERTICAL);
         mImm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         mBeforeInput = findViewById(R.id.before_value_view);
-        Spinner beforeType = findViewById(R.id.before_type_view);
+        beforeType = findViewById(R.id.before_type_view);
         beforeType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -127,23 +128,23 @@ public class BeforePickerView extends LinearLayout implements TextWatcher {
         if (mills % (TimeCount.DAY * 7) == 0) {
             long progress = mills / (TimeCount.DAY * 7);
             setProgress((int) progress);
-            setState(weeks);
+            beforeType.setSelection(weeks);
         } else if (mills % TimeCount.DAY == 0) {
             long progress = mills / TimeCount.DAY;
             setProgress((int) progress);
-            setState(days);
+            beforeType.setSelection(days);
         } else if (mills % TimeCount.HOUR == 0) {
             long progress = mills / TimeCount.HOUR;
             setProgress((int) progress);
-            setState(hours);
+            beforeType.setSelection(hours);
         } else if (mills % TimeCount.MINUTE == 0) {
             long progress = mills / TimeCount.MINUTE;
             setProgress((int) progress);
-            setState(minutes);
+            beforeType.setSelection(minutes);
         } else if (mills % TimeCount.SECOND == 0) {
             long progress = mills / TimeCount.SECOND;
             setProgress((int) progress);
-            setState(seconds);
+            beforeType.setSelection(seconds);
         }
     }
 

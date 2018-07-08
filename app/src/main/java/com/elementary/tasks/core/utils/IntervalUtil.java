@@ -62,25 +62,30 @@ public final class IntervalUtil {
     }
 
     @NonNull
-    public static String getInterval(Context mContext, long code) {
-        long minute = 1000 * 60;
-        long day = minute * 60 * 24;
-        long tmp = code / minute;
+    public static String getInterval(Context mContext, long mills) {
+        long tmp = mills / TimeCount.MINUTE;
         String interval;
         if (tmp > 1000) {
-            code /= day;
-            if (code == REPEAT_CODE_ONCE) {
+            mills /= TimeCount.DAY;
+            if (mills == REPEAT_CODE_ONCE) {
                 interval = "0";
-            } else if (code == INTERVAL_WEEK) {
+            } else if (mills == INTERVAL_WEEK) {
                 interval = String.format(mContext.getString(R.string.xW), String.valueOf(1));
-            } else if (code == INTERVAL_TWO_WEEKS) {
+            } else if (mills == INTERVAL_TWO_WEEKS) {
                 interval = String.format(mContext.getString(R.string.xW), String.valueOf(2));
-            } else if (code == INTERVAL_THREE_WEEKS) {
+            } else if (mills == INTERVAL_THREE_WEEKS) {
                 interval = String.format(mContext.getString(R.string.xW), String.valueOf(3));
-            } else if (code == INTERVAL_FOUR_WEEKS) {
+            } else if (mills == INTERVAL_FOUR_WEEKS) {
                 interval = String.format(mContext.getString(R.string.xW), String.valueOf(4));
             } else {
-                interval = String.format(mContext.getString(R.string.xD), String.valueOf(code));
+                interval = String.format(mContext.getString(R.string.xD), String.valueOf(mills));
+            }
+        } else if (tmp > 100) {
+            if (mills % TimeCount.HOUR == 0) {
+                mills /= TimeCount.HOUR;
+                return String.format(mContext.getString(R.string.x_hours), String.valueOf(mills));
+            } else {
+                return String.format(mContext.getString(R.string.x_min), String.valueOf(tmp));
             }
         } else {
             if (tmp == 0) {
