@@ -5,7 +5,7 @@ import android.app.FragmentManager;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,7 +17,7 @@ import com.elementary.tasks.databinding.CalendarWidgetConfigLayoutBinding;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.List;import androidx.legacy.app.FragmentPagerAdapter;
 
 /**
  * Copyright 2015 Nazar Suhovich
@@ -126,7 +126,7 @@ public class CalendarWidgetConfig extends ThemedActivity {
         finish();
     }
 
-    private class MyFragmentPagerAdapter extends android.support.v13.app.FragmentPagerAdapter {
+    private class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
         private List<CalendarTheme> arrayList;
 

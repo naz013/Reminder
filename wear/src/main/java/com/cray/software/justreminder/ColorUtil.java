@@ -1,6 +1,6 @@
 package com.cray.software.justreminder;
 
-import android.support.annotation.ColorRes;
+import androidx.annotation.ColorRes;
 
 /**
  * Copyright 2016 Nazar Suhovich

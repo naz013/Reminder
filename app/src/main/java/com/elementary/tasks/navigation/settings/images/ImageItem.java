@@ -1,7 +1,7 @@
 package com.elementary.tasks.navigation.settings.images;
 
-import android.databinding.Bindable;
-import android.databinding.Observable;
+import androidx.databinding.Bindable;
+import androidx.databinding.Observable;
 
 import com.google.gson.annotations.SerializedName;
 

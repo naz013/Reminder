@@ -3,9 +3,9 @@ package com.elementary.tasks.intro;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v13.app.FragmentStatePagerAdapter;
+import androidx.legacy.app.FragmentStatePagerAdapter;
 
 import com.elementary.tasks.R;
 import com.elementary.tasks.core.ThemedActivity;

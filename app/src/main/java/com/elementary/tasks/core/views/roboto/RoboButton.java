@@ -3,7 +3,7 @@ package com.elementary.tasks.core.views.roboto;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
-import android.support.v7.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatButton;
 import android.util.AttributeSet;
 
 import com.elementary.tasks.R;

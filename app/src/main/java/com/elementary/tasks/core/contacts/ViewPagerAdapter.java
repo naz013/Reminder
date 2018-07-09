@@ -3,7 +3,7 @@ package com.elementary.tasks.core.contacts;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
-import android.support.v13.app.FragmentPagerAdapter;
+import androidx.legacy.app.FragmentPagerAdapter;
 
 import com.elementary.tasks.R;
 

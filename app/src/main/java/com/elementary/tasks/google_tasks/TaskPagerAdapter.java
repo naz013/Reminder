@@ -2,7 +2,7 @@ package com.elementary.tasks.google_tasks;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.support.v13.app.FragmentStatePagerAdapter;
+import androidx.legacy.app.FragmentStatePagerAdapter;
 
 import java.util.List;
 import java.util.Map;

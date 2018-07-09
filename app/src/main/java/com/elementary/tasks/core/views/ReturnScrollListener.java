@@ -1,7 +1,7 @@
 package com.elementary.tasks.core.views;
 
 import android.animation.ObjectAnimator;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import com.elementary.tasks.core.utils.MeasureUtils;

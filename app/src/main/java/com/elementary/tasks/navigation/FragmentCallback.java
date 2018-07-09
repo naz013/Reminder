@@ -1,7 +1,7 @@
 package com.elementary.tasks.navigation;
 
 import android.app.Fragment;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import com.elementary.tasks.core.views.FilterView;

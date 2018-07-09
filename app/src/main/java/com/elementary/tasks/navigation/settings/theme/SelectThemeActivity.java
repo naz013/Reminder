@@ -1,8 +1,8 @@
 package com.elementary.tasks.navigation.settings.theme;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.elementary.tasks.R;

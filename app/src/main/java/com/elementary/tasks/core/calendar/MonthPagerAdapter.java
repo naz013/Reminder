@@ -2,7 +2,7 @@ package com.elementary.tasks.core.calendar;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.support.v13.app.FragmentStatePagerAdapter;
+import androidx.legacy.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

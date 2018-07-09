@@ -1,7 +1,7 @@
 package com.elementary.tasks.birthdays;
 
-import android.databinding.DataBindingUtil;
-import android.support.v7.widget.RecyclerView;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import com.elementary.tasks.R;
